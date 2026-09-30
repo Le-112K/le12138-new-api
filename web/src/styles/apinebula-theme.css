@@ -1,0 +1,637 @@
+/*
+ * ============================================================================
+ * APINebula 主题皮肤（移植自 https://apinebula.com）
+ * ============================================================================
+ * 三层结构：
+ *   1. 字体：DM Sans（可变字体）+ DM Mono，本地托管于 web/public/fonts/
+ *   2. 设计令牌：--nb-* 品牌体系 + 自定义变量（亮 / 暗两套）
+ *   3. Semi Design 变量覆盖 + 组件级定制（侧边栏 / 表格 / 输入控件 / 玻璃拟态）
+ *
+ * 兼容性：基于 QuantumNous/new-api v0.10.9（Semi Design 前端）
+ *   暗色机制 body[theme-mode=dark]（ThemeContext 设置），同时保留 html.dark
+ * ============================================================================ */
+
+/* ==================== 1. 字体 ==================== */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/fonts/DMSans-Variable-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/DMMono-400-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/DMMono-500-latin.woff2') format('woff2');
+}
+
+/* ==================== 2. 设计令牌（亮色） ==================== */
+:root {
+  /* 品牌色 */
+  --nb-brand: #c8714a;   /* 赤陶橙 terracotta */
+  --nb-brand-2: #2d7d4f; /* 深绿 */
+  --nb-accent: #fc8e1b;  /* 亮橙（暗色主角） */
+
+  /* 布局 */
+  --sidebar-width: 210px;
+  --sidebar-width-collapsed: 60px;
+  --sidebar-current-width: var(--sidebar-width);
+
+  /* 背景 */
+  --bg: #f7f5f2;
+  --bg2: #ffffff;
+  --bg3: #f7f5f2;
+  --bg4: #c1b4ae;
+  --bg5: #ffffff;
+  --bg6: #f7f5f2;
+  --bg7: rgba(255, 255, 255, 0.7);
+  --bg-add: #0f0f0e;
+  --bg-exchange: #fffdfa;
+  --bg-reset: #ffffff;
+  --bg-dashboard: #ffffff;
+  --bg8: #c1b4ae;
+  --bg9: #c1b4ae;
+  --bg10: #f7f5f2;
+  --bg11: #f7f5f2;
+  --input-bg: #f7f5f2;
+  --input-bg-hover: #f7f2ee;
+  --input-bg-focus: #f7f5f2;
+  --fa-bg: #f6f5f2;
+  --svg1: #f3f2ef;
+  --svg2: #efedeb;
+  --border1: #333333;
+  --surface: #ffffff;
+  --surface1: #ffffff;
+  --border: #e0ddd8;
+  --border2: #ccc9c3;
+  --border3: #e0ddd8;
+  --card-bordered: #ffffff;
+  --card-bg: #ffffff;
+
+  /* 文本 */
+  --text: #333333;
+  --text2: #6b6860;
+  --text3: #a09d97;
+  --text4: #a09d97;
+  --text-ori: #72645d;
+  --text-sar: #333333;
+  --table-head-text: #ffffff;
+  --text5: #837e75;
+  --text-card: #6e6860;
+  --text-active: #ffffff;
+
+  /* 强调 / 交互 */
+  --accent: #c1b4ae;
+  --accent-h: #b1a29b;
+  --accent-subtle: #f3eeeb;
+  --focus-ring: rgba(193, 180, 174, 0.32);
+
+  /* 侧边栏 */
+  --sidebar-item-text: #666666;
+  --sidebar-item-active-text: #333333;
+  --sidebar-item-hover-bg: #edeae1;
+  --sidebar-item-selected-bg: #edeae1;
+  --sidebar-icon: #6b6860;
+
+  /* 其他控件 */
+  --query-btn-text: #ffffff;
+  --query-btn-disabled-bg: #e9e4e2;
+  --switch-off-bg: #e7e0da;
+
+  /* 语义色 */
+  --green: #75a797;
+  --green-subtle: #edf7f1;
+  --blue: #2563eb;
+  --blue-subtle: #2563eb;
+  --red: #e63946;
+  --red-subtle: #fdf2f2;
+  --amber: #c89d52;
+  --amber-subtle: #f6e7ce;
+
+  /* 阴影 / 圆角 */
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.08);
+  --r: 8px;
+  --r-lg: 20px;
+
+  /* 表格 */
+  --table-head-bg: #c3b7b2;
+  --table-sorter-color: rgba(255, 255, 255, 0.58);
+  --table-sorter-active-color: #ffffff;
+  --table-head-radius: 16px;
+  --table-head-height: 44px;
+
+  --tab-active: #0a0a0a;
+
+  /* 字体 */
+  --font: 'DM Sans', 'PingFang SC', 'Microsoft YaHei', 'Source Han Sans', Lato,
+    'Helvetica Neue', Arial, sans-serif;
+  --mono: 'DM Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+
+  /* 玻璃拟态 */
+  --nb-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.92));
+  --nb-glass-border: 1px solid rgba(255, 255, 255, 0.9);
+  --nb-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(180, 160, 140, 0.18), 0 14px 40px -16px rgba(80, 50, 30, 0.22);
+  --nb-glass-blur: 22px;
+}
+
+/* ==================== 设计令牌（暗色） ==================== */
+html.dark,
+body[theme-mode='dark'] {
+  color-scheme: dark;
+
+  --bg: #111110;
+  --bg2: #1a1917;
+  --bg3: #0a0a0a;
+  --bg4: #27190d;
+  --bg5: #2a2a2a;
+  --bg6: #39393d;
+  --bg7: #201e1c;
+  --bg-add: #fc8e1b;
+  --bg-exchange: #201e1c;
+  --bg-reset: #39393d;
+  --bg-dashboard: #2b2b2b;
+  --bg8: #fc8e1b;
+  --bg9: #fb8b20;
+  --bg10: #27190d;
+  --bg11: #161616;
+  --input-bg: #404040;
+  --input-bg-hover: #4a4a4a;
+  --input-bg-focus: #464646;
+  --fa-bg: #201e1c;
+  --svg1: #39393d;
+  --svg2: #1f1e1c;
+  --border1: #fb8b20;
+  --surface: #202020;
+  --surface1: #797979;
+  --border: rgba(224, 221, 216, 0.3);
+  --border2: #3d3b37;
+  --border3: rgba(224, 221, 216, 0.3);
+  --card-bordered: rgba(255, 255, 255, 0.3);
+  --card-bg: #2a2a2a;
+
+  --text: #f0ede8;
+  --text2: #8c8a84;
+  --text3: #ffffff;
+  --text4: #ffffff;
+  --text-ori: #ffffff;
+  --text-sar: #000000;
+  --table-head-text: #ffffff;
+  --text5: #ffffff;
+  --text-card: #ffffff;
+  --text-active: #fb8b20;
+
+  --accent: #fc8e1b;
+  --accent-h: #fc8e1b;
+  --accent-subtle: #3a2820;
+  --focus-ring: rgba(212, 132, 95, 0.28);
+
+  --sidebar-item-text: #ffffff;
+  --sidebar-item-active-text: #000000;
+  --sidebar-item-hover-bg: #fb8b20;
+  --sidebar-item-selected-bg: #fb8b20;
+  --sidebar-icon: rgba(255, 255, 255, 0.7);
+
+  --query-btn-text: #fff7f3;
+  --query-btn-disabled-bg: #434449;
+  --switch-off-bg: #55534f;
+
+  --green: #75a797;
+  --green-subtle: #162b1f;
+  --blue: #60a5fa;
+  --blue-subtle: #60a5fa;
+  --red: #fca5a5;
+  --red-subtle: rgba(230, 57, 70, 0.15);
+  --amber: #fbbf24;
+  --amber-subtle: rgba(200, 157, 82, 0.18);
+
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.35);
+
+  --table-head-bg: #161616;
+  --table-sorter-color: rgba(255, 255, 255, 0.46);
+  --table-sorter-active-color: var(--accent);
+
+  --tab-active: #fc8e1b;
+
+  --nb-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  --nb-glass-border: 1px solid rgba(255, 255, 255, 0.14);
+  --nb-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04), 0 24px 60px -20px rgba(0, 0, 0, 0.55);
+}
+
+/* ==================== 3. Semi 变量覆盖（亮色） ==================== */
+body {
+  /* 品牌主色 → 暖陶土 */
+  --semi-color-primary: var(--accent);
+  --semi-color-primary-hover: var(--accent-h);
+  --semi-color-primary-active: #a99890;
+  --semi-color-primary-disabled: rgba(193, 180, 174, 0.45);
+  --semi-color-primary-light-default: #f3eeeb;
+  --semi-color-primary-light-hover: #ece4de;
+  --semi-color-primary-light-active: #e4d8d1;
+  --semi-color-focus-border: #d7cbc5;
+
+  --semi-color-secondary: #11110f;
+  --semi-color-secondary-hover: #2b2926;
+  --semi-color-secondary-active: #050505;
+  --semi-color-secondary-focus: rgba(17, 17, 15, 0.24);
+
+  /* 聊天气泡 */
+  --semi-chat-chatBox-content-user-bg: #f7f5f2;
+  --semi-chat-chatBox-content-user-bg-active: #161616;
+  --semi-chat-chatBox-content-user-bg-active-hover: #2b2926;
+  --semi-chat-chatBox-content-user-text: #333333;
+  --semi-chat-bg: #ffffff;
+  --semi-chat-border: #e0ddd8;
+
+  /* 语义色 */
+  --semi-color-success: var(--green);
+  --semi-color-success-hover: #266a43;
+  --semi-color-success-active: #1f5638;
+  --semi-color-success-light-default: var(--green-subtle);
+  --semi-color-success-light-hover: #dff0e6;
+  --semi-color-success-light-active: #cce8d6;
+  --semi-color-danger: var(--red);
+  --semi-color-danger-hover: #cf2f3b;
+  --semi-color-danger-active: #b32731;
+  --semi-color-danger-light-default: var(--red-subtle);
+  --semi-color-danger-light-hover: #fbe5e7;
+  --semi-color-danger-light-active: #f7d3d6;
+  --semi-color-warning: var(--amber);
+  --semi-color-warning-hover: #b48a3f;
+  --semi-color-warning-active: #9a7430;
+  --semi-color-warning-light-default: var(--amber-subtle);
+  --semi-color-warning-light-hover: #f0d8b2;
+  --semi-color-warning-light-active: #e8c898;
+  --semi-color-info: #c3b7b2;
+  --semi-color-info-hover: #b7aaa5;
+  --semi-color-info-active: #ab9e99;
+  --semi-color-info-light-default: #f3eeeb;
+  --semi-color-info-light-hover: #ebe4e0;
+  --semi-color-info-light-active: #e0d6d1;
+
+  /* 背景 / 填充 / 文本 / 边框 */
+  --semi-color-bg-0: var(--bg);
+  --semi-color-bg-1: var(--surface);
+  --semi-color-bg-2: var(--bg2);
+  --semi-color-bg-3: #fffdfb;
+  --semi-color-bg-4: #e7e0da;
+  --semi-color-fill-0: #f2efea;
+  --semi-color-fill-1: #f7f2ee;
+  --semi-color-fill-2: #e7e0da;
+  --semi-color-text-0: var(--text);
+  --semi-color-text-1: var(--text);
+  --semi-color-text-2: var(--text2);
+  --semi-color-text-3: var(--text3);
+  --semi-color-border: var(--border);
+
+  /* 链接 / 导航 */
+  --semi-color-link: var(--accent);
+  --semi-color-link-hover: var(--accent-h);
+  --semi-color-link-active: #a0532f;
+  --semi-color-link-visited: var(--accent);
+  --semi-color-nav-bg: var(--bg);
+
+  /* 基础外观 */
+  font-family: var(--font);
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+/* ==================== Semi 变量覆盖（暗色） ==================== */
+body[theme-mode='dark'] {
+  --semi-color-primary: var(--accent);
+  --semi-color-primary-hover: var(--accent-h);
+  --semi-color-primary-active: #f0aa88;
+  --semi-color-primary-disabled: rgba(212, 132, 95, 0.38);
+  --semi-color-primary-light-default: rgba(212, 132, 95, 0.18);
+  --semi-color-primary-light-hover: rgba(212, 132, 95, 0.26);
+  --semi-color-primary-light-active: rgba(212, 132, 95, 0.34);
+  --semi-color-focus-border: rgba(212, 132, 95, 0.52);
+
+  --semi-color-secondary: #fc8e1c;
+  --semi-color-secondary-hover: #ffa13a;
+  --semi-color-secondary-active: #e87708;
+  --semi-color-secondary-focus: rgba(252, 142, 28, 0.32);
+
+  --semi-chat-chatBox-content-user-bg: #161616;
+  --semi-chat-chatBox-content-user-bg-active: #fb8b20;
+  --semi-chat-chatBox-content-user-bg-active-hover: #ffa13a;
+  --semi-chat-chatBox-content-user-text: #ffffff;
+  --semi-chat-bg: #202020;
+  --semi-chat-border: #e0ddd8;
+
+  --semi-color-success: var(--green);
+  --semi-color-success-light-default: var(--green-subtle);
+  --semi-color-danger: var(--red);
+  --semi-color-danger-light-default: var(--red-subtle);
+  --semi-color-warning: var(--amber);
+  --semi-color-warning-light-default: var(--amber-subtle);
+  --semi-color-info: var(--blue);
+  --semi-color-info-light-default: var(--blue-subtle);
+
+  --semi-color-bg-0: var(--bg);
+  --semi-color-bg-1: var(--surface);
+  --semi-color-bg-2: var(--bg2);
+  --semi-color-bg-3: #252525;
+  --semi-color-bg-4: #333333;
+  --semi-color-fill-0: #333333;
+  --semi-color-fill-1: #4a4a4a;
+  --semi-color-fill-2: #555555;
+  --semi-color-text-0: var(--text);
+  --semi-color-text-1: var(--text);
+  --semi-color-text-2: var(--text2);
+  --semi-color-text-3: var(--text3);
+  --semi-color-border: var(--border);
+
+  --semi-color-link: var(--accent);
+  --semi-color-link-hover: var(--accent-h);
+  --semi-color-nav-bg: var(--bg);
+}
+
+/* ==================== 4. 组件级定制 ==================== */
+
+/* ---- 全局圆角：8px 体系（覆盖原 10px） ---- */
+.semi-radio,
+.semi-tagInput,
+.semi-input-textarea-wrapper,
+.semi-navigation-sub-title,
+.semi-chat-inputBox-sendButton,
+.semi-page-item,
+.semi-navigation-item,
+.semi-tag-closable,
+.semi-input-wrapper,
+.semi-tabs-tab-button,
+.semi-select,
+.semi-button,
+.semi-datepicker-range-input {
+  border-radius: var(--r) !important;
+}
+
+/* ---- 侧边栏导航项 ---- */
+.sidebar-nav-item {
+  border-radius: 6px;
+  margin: 3px 8px;
+  transition: all 0.15s ease;
+  padding: 8px 12px;
+  color: var(--sidebar-item-text);
+}
+
+.sidebar-nav-item:hover {
+  background-color: var(--sidebar-item-hover-bg);
+  color: var(--sidebar-item-active-text);
+}
+
+.sidebar-nav-item-selected {
+  background-color: var(--sidebar-item-selected-bg);
+  color: var(--sidebar-item-active-text);
+  font-weight: 500;
+}
+
+.sidebar-nav .semi-navigation-item,
+.sidebar-nav .semi-navigation-sub-title {
+  color: var(--sidebar-item-text) !important;
+}
+
+.sidebar-nav .semi-navigation-item-selected,
+.sidebar-nav
+  .semi-navigation-vertical
+  .semi-navigation-list
+  > .semi-navigation-sub-wrap
+  > .semi-navigation-sub-title-selected {
+  background-color: var(--sidebar-item-selected-bg) !important;
+  color: var(--sidebar-item-active-text) !important;
+}
+
+.sidebar-nav .semi-navigation-item-normal:hover,
+.sidebar-nav
+  .semi-navigation-vertical
+  .semi-navigation-list
+  > .semi-navigation-sub-wrap
+  > .semi-navigation-sub-title:hover:not(.semi-navigation-sub-title-selected),
+.sidebar-nav
+  .semi-navigation-item-normal:hover.semi-navigation-item-selected,
+.sidebar-nav
+  .semi-navigation-vertical
+  .semi-navigation-list
+  > .semi-navigation-sub-wrap
+  > .semi-navigation-sub-title:hover.semi-navigation-sub-title-selected {
+  background-color: var(--sidebar-item-hover-bg) !important;
+  color: var(--sidebar-item-active-text) !important;
+}
+
+.sidebar-nav
+  .semi-navigation-item-selected
+  .semi-navigation-item-text,
+.sidebar-nav .semi-navigation-item-normal:hover .semi-navigation-item-text,
+.sidebar-nav
+  .semi-navigation-vertical
+  .semi-navigation-list
+  > .semi-navigation-sub-wrap
+  > .semi-navigation-sub-title-selected
+  .semi-navigation-item-text,
+.sidebar-nav
+  .semi-navigation-vertical
+  .semi-navigation-list
+  > .semi-navigation-sub-wrap
+  > .semi-navigation-sub-title:hover
+  .semi-navigation-item-text {
+  color: var(--sidebar-item-active-text) !important;
+}
+
+/* ---- 表格：陶土色表头（标志性外观） ---- */
+.semi-table-thead > .semi-table-row > .semi-table-row-head {
+  background: var(--table-head-bg) !important;
+  color: var(--table-head-text) !important;
+  border-bottom: 0 !important;
+  font-size: 16px;
+  padding: 15px 16px !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+
+.semi-table-thead
+  > .semi-table-row
+  > .semi-table-row-head.semi-table-cell-fixed-left,
+.semi-table-thead
+  > .semi-table-row
+  > .semi-table-row-head.semi-table-cell-fixed-left-last,
+.semi-table-thead
+  > .semi-table-row
+  > .semi-table-row-head.semi-table-cell-fixed-right,
+.semi-table-thead
+  > .semi-table-row
+  > .semi-table-row-head.semi-table-cell-fixed-right-first {
+  background: var(--table-head-bg) !important;
+  z-index: 220 !important;
+}
+
+.users-table .semi-table-container {
+  border-radius: var(--table-head-radius, 16px) var(--table-head-radius, 16px) 0 0;
+}
+
+.users-table
+  .semi-table-thead
+  > .semi-table-row
+  > .semi-table-row-head:first-child {
+  border-top-left-radius: var(--table-head-radius, 16px);
+}
+
+.users-table
+  .semi-table-thead
+  > .semi-table-row
+  > .semi-table-row-head:last-child {
+  border-top-right-radius: var(--table-head-radius, 16px);
+}
+
+/* ---- 输入控件：暖色填充 + 8px 圆角 ---- */
+.semi-input-wrapper,
+.semi-select,
+.semi-datepicker,
+.semi-datepicker-range-input,
+.semi-input-number,
+.semi-input-textarea-wrapper,
+.semi-datepicker .semi-input-wrapper,
+.semi-input-number .semi-input-wrapper,
+.semi-select .semi-input-wrapper {
+  border: var(--field-border, 0) !important;
+  border-radius: 8px !important;
+  background: var(--field-bg, var(--input-bg));
+  background-color: var(--field-bg, var(--input-bg));
+  box-shadow: none !important;
+}
+
+.semi-input-wrapper:hover,
+.semi-select:hover,
+.semi-datepicker:hover,
+.semi-datepicker-range-input:hover,
+.semi-input-number:hover,
+.semi-input-textarea-wrapper:hover,
+.semi-datepicker:hover .semi-input-wrapper,
+.semi-input-number:hover .semi-input-wrapper,
+.semi-select:hover .semi-input-wrapper {
+  background: var(--field-bg-hover, var(--field-bg, var(--input-bg-hover, var(--input-bg))));
+  background-color: var(
+    --field-bg-hover,
+    var(--field-bg, var(--input-bg-hover, var(--input-bg)))
+  );
+}
+
+.semi-input-wrapper-focus,
+.semi-input-wrapper-focus:hover,
+.semi-input-wrapper-focus:active,
+.semi-select-focus,
+.semi-datepicker .semi-input-wrapper-focus,
+.semi-datepicker .semi-input-wrapper-focus:hover,
+.semi-datepicker .semi-input-wrapper-focus:active,
+.semi-input-number .semi-input-wrapper-focus,
+.semi-input-number .semi-input-wrapper-focus:hover,
+.semi-input-number .semi-input-wrapper-focus:active,
+.semi-input-textarea-wrapper-focus,
+.semi-input-textarea-wrapper-focus:hover,
+.semi-input-textarea-wrapper-focus:active {
+  border: var(--field-border-focus, var(--field-border, 0)) !important;
+  background: var(--field-bg-focus, var(--field-bg, var(--input-bg-focus, var(--input-bg))));
+  background-color: var(
+    --field-bg-focus,
+    var(--field-bg, var(--input-bg-focus, var(--input-bg)))
+  );
+}
+
+/* ---- DatePicker 面板 ---- */
+.semi-datepicker-range-input,
+.semi-datepicker-range-input-wrapper,
+.semi-datepicker-range-input-wrapper-start,
+.semi-datepicker-range-input-wrapper-end,
+.semi-datepicker-range-input-separator,
+.semi-datepicker-range-input-suffix {
+  background: var(--field-bg, var(--input-bg));
+  background-color: var(--field-bg, var(--input-bg));
+}
+
+body[theme-mode='dark'] .semi-datepicker-range-input,
+body[theme-mode='dark'] .semi-datepicker-range-input-wrapper,
+body[theme-mode='dark'] .semi-datepicker-range-input-wrapper-start,
+body[theme-mode='dark'] .semi-datepicker-range-input-wrapper-end,
+body[theme-mode='dark'] .semi-datepicker-range-input-separator,
+body[theme-mode='dark'] .semi-datepicker-range-input-suffix,
+body[theme-mode='dark'] .semi-input-wrapper,
+body[theme-mode='dark'] .semi-select,
+body[theme-mode='dark'] .semi-datepicker,
+body[theme-mode='dark'] .semi-input-number,
+body[theme-mode='dark'] .semi-input-textarea-wrapper,
+body[theme-mode='dark'] .semi-datepicker .semi-input-wrapper,
+body[theme-mode='dark'] .semi-input-number .semi-input-wrapper,
+body[theme-mode='dark'] .semi-select .semi-input-wrapper {
+  background: var(--field-bg, var(--input-bg));
+  background-color: var(--field-bg, var(--input-bg));
+}
+
+.semi-datepicker-switch {
+  margin: 8px 12px 10px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  background: var(--input-bg) !important;
+  background-color: var(--input-bg) !important;
+}
+
+.semi-datepicker-quick-control-bottom {
+  padding: 10px 12px !important;
+  background: var(--input-bg) !important;
+}
+
+.semi-datepicker-footer {
+  margin: 10px 12px 12px !important;
+  padding: 10px 12px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  background: var(--input-bg) !important;
+  background-color: var(--input-bg) !important;
+}
+
+/* ---- 代码 / 等宽字体 ---- */
+code {
+  font-family: var(--mono);
+}
+
+/* ==================== 5. 玻璃拟态工具类 ==================== */
+.nb-glass {
+  position: relative;
+  background: var(--nb-glass-bg);
+  backdrop-filter: blur(var(--nb-glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--nb-glass-blur)) saturate(160%);
+  border: var(--nb-glass-border);
+  box-shadow: var(--nb-glass-shadow);
+  border-radius: 18px;
+  isolation: isolate;
+}
+
+.nb-glass-soft {
+  background: var(--nb-glass-bg);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: var(--nb-glass-border);
+  border-radius: 14px;
+}
+
+.nb-nav-glass {
+  background: var(--nb-glass-bg) !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+  border-bottom: var(--nb-glass-border) !important;
+}
